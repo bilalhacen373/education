@@ -1,0 +1,3 @@
+قم بإنشاء معلومات تفصيلية للكورس بصيغة JSON فقط بدون أي نص إضافي للعنوان التالي "المتتاليات" :
+            {"title": "عنوان الدرس بالإنجليزية","title_ar": "عنوان الدرس بالعربية","description": "وصف مختصر للدرس بالإنجليزية","description_ar": "وصف مختصر للدرس بالعربية","difficulty_level": "beginner أو intermediate أو advanced","duration_hours": "رقم تقدير مدة الكورس بالساعات","learning_objectives": "[هدف تعليمي 1, هدف تعليمي 2, هدف تعليمي 3, ....]","prerequisites": "[متطلب 1, متطلب 2, ....]","enrollment_conditions": "شروط التسجيل بالإنجليزية","enrollment_conditions_ar": "شروط التسجيل بالعربية","subjects": "[math, phisics, ....]",}
+            يجب أن يكون الرد JSON فقط بدون أي نص قبله أو بعده.
