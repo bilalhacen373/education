@@ -107,6 +107,21 @@ export default function CreateLesson({ auth, course, classes }) {
         const file = e.target.files[0];
         if (!file) return;
 
+        const allowedExtensions = ['pdf', 'doc', 'docx', 'txt', 'md'];
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+
+        if (!allowedExtensions.includes(fileExtension)) {
+            toast.error('صيغة الملف غير مدعومة. استخدم: PDF أو Word أو نص');
+            e.target.value = '';
+            return;
+        }
+
+        if (file.size > 10 * 1024 * 1024) {
+            toast.error('حجم الملف أكبر من 10 ميجابايت');
+            e.target.value = '';
+            return;
+        }
+
         setExtractFile(file);
         setExtracting(true);
 
@@ -118,6 +133,7 @@ export default function CreateLesson({ auth, course, classes }) {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
+                timeout: 180000,
             });
 
             if (response.data.success) {
@@ -139,7 +155,24 @@ export default function CreateLesson({ auth, course, classes }) {
             }
         } catch (error) {
             console.error('Error extracting from document:', error);
-            toast.error(error.response?.data?.error || 'فشل استخراج المعلومات من المستند. تأكد من تشغيل خدمة الذكاء الاصطناعي على http://localhost:5000');
+
+            let errorMessage = 'فشل استخراج المعلومات من المستند';
+
+            if (error.response?.status === 503) {
+                errorMessage = 'خدمة الذكاء الاصطناعي غير متاحة حالياً. تأكد من أن الخدمة متاحة على https://ai.server.3ilme.com';
+            } else if (error.response?.status === 403) {
+                errorMessage = 'غير مصرح بالوصول. تأكد من أن لديك ملف معلم';
+            } else if (error.response?.status === 422) {
+                errorMessage = error.response.data.error || 'فشل في تحليل الملف. تأكد من صيغة الملف صحيحة';
+            } else if (error.code === 'ECONNABORTED') {
+                errorMessage = 'انتهت المهلة الزمنية. يرجى المحاولة مرة أخرى';
+            } else if (!error.response) {
+                errorMessage = 'فشل الاتصال بخدمة الذكاء الاصطناعي. تأكد من اتصالك بالإنترنت';
+            } else {
+                errorMessage = error.response?.data?.error || errorMessage;
+            }
+
+            toast.error(errorMessage);
         } finally {
             setExtracting(false);
             setExtractFile(null);
@@ -252,7 +285,7 @@ export default function CreateLesson({ auth, course, classes }) {
                                         </div>
                                         {!extracting && (
                                             <p className="text-xs text-blue-600 mt-2">
-                                                💡 تأكد من تشغيل خدمة الذكاء الاصطناعي على http://localhost:5000
+                                                💡 تأكد من توفر خدمة الذكاء الاصطناعي على https://ai.server.3ilme.com
                                             </p>
                                         )}
                                     </div>

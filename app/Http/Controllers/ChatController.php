@@ -581,7 +581,7 @@ class ChatController extends Controller
                 } else {
                     return response()->json([
                         'success' => false,
-                        'error' => 'فشل في إنشاء محادثة مع الذكاء الاصطناعي',
+                        'error' => 'فشل في إنشاء محادثة مع الذكاء الاصطناعي. تأكد من أن الخدمة متاحة على https://ai.server.3ilme.com',
                     ], 500);
                 }
             }
@@ -605,7 +605,7 @@ class ChatController extends Controller
                 } else {
                     return response()->json([
                         'success' => false,
-                        'error' => 'لم يتمكن من العثور على معرف محادثة صحيح مع خدمة الذكاء الاصطناعي',
+                        'error' => 'لم يتمكن من العثور على معرف محادثة صحيح مع خدمة الذكاء الاصطناعي. تأكد من أن الخدمة متاحة.',
                     ], 503);
                 }
             }
@@ -621,7 +621,7 @@ class ChatController extends Controller
             }
             يجب أن يكون الرد JSON فقط بدون أي نص قبله أو بعده.';
 
-            $apiResult = $this->chatApiService->sendMessage($externalChatId, $prompt, [$file]);
+            $apiResult = $this->chatApiService->sendMessage($externalChatId, $prompt, [$file], 'gemini');
 
             if ($apiResult['success']) {
                 $aiResponse = $apiResult['response'];
@@ -668,6 +668,7 @@ class ChatController extends Controller
                 ], 503);
             }
         } catch (\Exception $e) {
+            \Log::error('Extract from document error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'error' => 'خطأ في الاتصال بخدمة الذكاء الاصطناعي: ' . $e->getMessage(),

@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Log;
 
 class ChatApiService
 {
-    private $externalApiUrl = 'http://localhost:5000';
-    private $timeout = 160;
+    private $externalApiUrl = 'https://ai.server.3ilme.com';
+    private $timeout = 180;
 
     private const DEEPSEEK = 'deepseek';
     private const GEMINI = 'gemini';
@@ -27,8 +27,8 @@ class ChatApiService
 
     public function __construct()
     {
-        $this->externalApiUrl = env('CHAT_API_URL', 'http://localhost:5000');
-        $this->timeout = (int) env('CHAT_API_TIMEOUT', 160);
+        $this->externalApiUrl = env('CHAT_API_URL', 'https://ai.server.3ilme.com');
+        $this->timeout = (int) env('CHAT_API_TIMEOUT', 180);
     }
 
     /**
