@@ -1,3 +1,3 @@
 - in my application education laravel + react + mysql i have some features missed and some problems for resolving:
     - http://127.0.0.1:8000/teacher/lessons/create:
-        - when i click to button 'اختر مستند' for auto fill form create lesson is not work for resolve this read the file API_INTEGRATION_GUIDE.md and use it correctaly for extract data from uploaded file
+        - when i click to button 'اختر مستند' for auto fill form create lesson is not work for resolve this read the file API_INTEGRATION_GUIDE.md and use it correctaly for extract data from uploaded fileread
